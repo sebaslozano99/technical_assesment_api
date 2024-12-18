@@ -11,19 +11,27 @@ const getOwners = async (req, res) => {
                 person.id AS owner_id,
                 first_name,
                 last_name,
-                ARRAY_AGG(
-                    json_object('{car_id, cars.id}', '{car, cars.car}')
+                JSON_AGG(
+                    JSON_OBJECT(
+                        ARRAY['car_id', 'car'],
+                        ARRAY[cars.id::text, cars.car]
+                    )
                 ) AS cars
             FROM person
             LEFT JOIN cars ON cars.person_id = person.id
             GROUP BY person.id 
         `);
-        console.log(rows);
+        console.log("Rows :", rows);
+
+        await database.end();
         res.status(200).json(rows);
     }
     catch(error){
         console.error(error);
         res.status(500).json({message: error || "Internal Server Error!"});
+    }
+    finally {
+        database.end();
     }
 }
 
