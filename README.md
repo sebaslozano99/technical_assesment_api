@@ -15,19 +15,25 @@ persona/owner ya se haya migrado, se responde con un error, de lo contrario se p
 ## CONFIGURACION E INSTALACION 
 
   1. Clonar el repositorio de github e ingresar al repositorio
+```
     git clone https://github.com/sebaslozano99/technical_assesment_api.git
     cd technical_assesment_api
+```
+
 
   2. Instalar dependencioas
+```
      npm install
+```
+
 
   3. Añadir variables de entorno (Crea un archivo .env en la raíz del proyecto y configura las siguientes variables:)
-     - DB_USER=ingresar nombre de usuario de tu PostgreSQL base de datos
-     - DB_HOST=ingresar el hostname de tu PostgreSQL base de datos (ingresar "localhost" si se va a ejecutar localmente)
-     - DB_PASSWORD=ingresar contraseña de tu PostgreSQL base de datos
-     - DB_PORT=ingresar el numero de puerto de tu PostgreSQL base de datos (numero predeterminado es 5432, usualmente)
-     - DB_NAME=ingresar el nombre de tu base de datos en PostgreSQL 
-     - PORT=ingresa el numero de puerto en que deseas la aplicacion de Express js sea ejecutada
+     - **DB_USER=**ingresar nombre de usuario de tu PostgreSQL base de datos
+     - **DB_HOST=**ingresar el hostname de tu PostgreSQL base de datos (ingresar "localhost" si se va a ejecutar localmente)
+     - **DB_PASSWORD=**ingresar contraseña de tu PostgreSQL base de datos
+     - **DB_PORT=**ingresar el numero de puerto de tu PostgreSQL base de datos (numero predeterminado es 5432, usualmente)
+     - **DB_NAME=**ingresar el nombre de tu base de datos en PostgreSQL 
+     - **PORT=**ingresa el numero de puerto en que deseas la aplicacion de Express js sea ejecutada
 
   
 ## CONFIGURACION DE LA BASE DE DATOS POSTGRESQL
@@ -45,12 +51,12 @@ uno o mas vehiculos (cars) y uno o mas mascotas (pets).
       - last_name: VARCHAR(40)
    - Tabla de ejemplo:
      
-      id | first_name | last_name
-     ----+------------+------------
-       1 | Amy        | Johnson
-       2 | Peter      | Carter
-       3 | Jennifer   | Strickland
-       4 | Tom        | Hill
+      id | first_name | last_name<br/>
+     ----+------------+------------<br/>
+       1 | Amy        | Johnson<br/>
+       2 | Peter      | Carter<br/>
+       3 | Jennifer   | Strickland<br/>
+       4 | Tom        | Hill<br/>
 
 
 2. **Cars**
@@ -61,13 +67,13 @@ uno o mas vehiculos (cars) y uno o mas mascotas (pets).
      - car: VARCHAR(100)
    - Tabla de ejemplo:
      
-      id | person_id |       car
-     ----+-----------+------------------
-       1 |         1 | Mazda 3
-       2 |         1 | Nissan Versa
-       3 |         2 | Renault Duster
-       4 |         2 | Chevrolet Spark
-       5 |         4 | Chevrolet Camaro
+      id | person_id |       car<br/>
+     ----+-----------+------------------<br/>
+       1 |         1 | Mazda 3<br/>
+       2 |         1 | Nissan Versa<br/>
+       3 |         2 | Renault Duster<br/>
+       4 |         2 | Chevrolet Spark<br/>
+       5 |         4 | Chevrolet Camaro<br/>
 
 
 3. **Pets**
@@ -79,14 +85,86 @@ uno o mas vehiculos (cars) y uno o mas mascotas (pets).
      - breed: VARCHAR(40) NOT NULL
    - Tabla de ejemplo:
   
-      id | person_id | pet_name |      breed
-     ----+-----------+----------+------------------
-       1 |         2 | Zeus     | Husky
-       2 |         2 | Max      | Husky
-       3 |         3 | Star     | German Shepherd
-       4 |         3 | Aquiles  | Labrador
-       5 |         4 | Thor     | Golden Retriever
+      id | person_id | pet_name |      breed<br/>
+     ----+-----------+----------+------------------<br/>
+       1 |         2 | Zeus     | Husky<br/>
+       2 |         2 | Max      | Husky<br/>
+       3 |         3 | Star     | German Shepherd<br/>
+       4 |         3 | Aquiles  | Labrador<br/>
+       5 |         4 | Thor     | Golden Retriever<br/>
+
+
+## EJECMPLOS DE SQL QUERIES PARA LLENAR LAS BASES DE DATOS
+
+Copia el las siguientes queries para generar las tables y su respectiva informacion. 
+
+-- Crear table person
+```
+
+CREATE TABLE person (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+);
+```
+
+
+-- Insertar informacion en la tabla Person
+```
+
+INSERT INTO person (first_name, last_name) VALUES
+   ('John', 'Doe'),
+   ('Jane', 'Smith'),
+   ('Alice', 'Brown'),
+   ('Bob', 'Green');
+```
 
 
 
+-- Crear tabla cars
+```
 
+CREATE TABLE cars (
+    id SERIAL PRIMARY KEY,
+    person_id INTEGER,
+    car VARCHAR(100) NOT NULL,
+    FOREIGN KEY(person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+```
+
+
+-- Insertar informacion en la tabla cars
+```
+INSERT INTO cars (person_id, car) VALUES 
+    (1, "Mazda 3"), (1, "Nissan Versa"), (2, "Renault Duster"),
+    (2, "Chevrolet Spark"), (4, "Chevrolet Camaro"), (3, "Toyota Hilux"),
+    (4, "Toyota land cruiser 300"), (4, "Lexus lx 600 luxury"), (4, "Audi R8"),
+    (4, "Renault Duster");
+```
+
+
+
+-- Crear tabla pets{¿
+```
+CREATE TABLE cars (
+    id SERIAL PRIMARY KEY,
+    person_id INTEGER,
+    pet_name VARCHAR(40) NOT NULL,
+    breed VARCHAR(40) NOT NULL
+    FOREIGN KEY(person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+```
+
+```
+INSERT INTO pets (person_id, pet_name, breed) VALUES
+    (2, "Zeus", "Husky"), (2, "Max", "Husky"), (3, "Star", "German Shepherd"),
+    (3, "Aquiles", "Labrador"), (4, "Thor", "Golden Retriever"), (4, "Iron Man", "Labrador"),
+    (4, "Black Widow", "Australian Shepherd"), (4, "Tommy", "German Shepherd"), (1, "Janny", "Beagle"),
+    (1, "Terry", "Beagle");
+```
+
+
+## RUN THE APPLICATION
+```
+   npm start
+```
