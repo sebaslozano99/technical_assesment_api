@@ -14,13 +14,12 @@ const ownersSchema = new Schema({
     },
     cars: Array,
     pets: Array
-    }, 
-    {
+    }, {
     statics: {
         isOwnerInDB(ownerId) {
             return this.exists({owner_id: ownerId});
+            }
         }
-    }
     }
 );
 
