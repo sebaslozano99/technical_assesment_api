@@ -9,6 +9,7 @@ async function getOwnerFromPostgres(ownerId){
                 person.id AS owner_id,
                 first_name,
                 last_name,
+
                 JSON_AGG(
                     JSON_OBJECT(
                         ARRAY['car_id', 'car'],
@@ -26,7 +27,7 @@ async function getOwnerFromPostgres(ownerId){
                         ) AS petsArray
                     FROM pets
                     WHERE pets.person_id = $1
-                ) AS pets
+                )   AS pets
 
             FROM person
             LEFT JOIN cars ON cars.person_id = person.id
