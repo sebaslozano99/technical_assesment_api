@@ -5,7 +5,7 @@ const { getOwners } = require("../controllers/ownersController.js");
 const ownersRouter = Router();
 
 
-ownersRouter.get("/owners/:id_owner", getOwners);
+ownersRouter.get("/owners/:ownerID", getOwners);
 
 
 

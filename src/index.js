@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const { ownersRouter } = require("./Routes/ownersRoute.js");
 
 
-// Connection to MongoDB
+const app = express();
+
+
 mongoose.connect("mongodb://localhost:27017/ownership_db")
     .then(() => console.log("Connected to Mongoose!"))
-    // .then((error) => console.error("Error connecting to MongoDB: ", error)); 
+    .catch(error => console.log(error));
 
-
-const app = express();
 
 
 // MIDDLEWARES
